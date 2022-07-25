@@ -1,7 +1,7 @@
 'use strict';
 
 function showMessage(theMessage) {
-    messageArea.innerHTML += `<br>${theMessage}`;
+    messageArea.innerHTML += `<br><br>${theMessage}`;
 }
 
 function displayThumbnail(theUploadedFile) {
