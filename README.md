@@ -1,5 +1,13 @@
-1. Client-side via the Input tag. Of course the user is free to select 'All files' and try to upload anything.
+# Prototype testing of simple image upload for a website.
 
-2. Checking the filename for an undesired file extension.
+## The user should be able to upload an image file only.
 
-3. Some scrutiny of the file itself to check it's not a .sql in disguise or something of that nature. This is where libraries and other 3rd-party tools are useful, but my instinct is to stick with basic vanilla JS as much as possible, for the extra layer of future-proofing and easy maintainability. I find libraries troublesome to deal with. I dislike setting up and cnfiguring npm.
+All vanilla JavaScript/HTML ✅
+
+The client-side dialogue window should limit the user choice to the specified file types. ✅
+
+If the client overrides the dialogue window and tries to upload another filetype, server-side validation should prevent further action. ✅
+
+If the file is larger than the maximum allowed (5MB in this case), server-side validation should prevent upload. ✅
+
+The final check: analysis of the data in the file to ensure that 1) this is an image file, and 2) it does not contain arbitrarily executing code, etc. (TBD) ❗(Might need an external node package for this one unfortunately. Still looking for a secure vanilla JS solution.)
