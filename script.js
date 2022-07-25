@@ -4,56 +4,56 @@ function showMessage(theMessage) {
     messageArea.innerHTML += `<br>${theMessage}`;
 }
 
+function displayThumbnail(theUploadedFile) {
+    showMessage(theUploadedFile);
+}
+
 // ***********************************************
 // ***********************************************
 
-let allowedFileTypes = ['jpg', 'jpeg', 'png'];
+let allowedFileTypes = /(\.jpg|\.jpeg|\.png)$/i;
+// this RegEx can be arbitrarily expanded to allow more file types, e.g. .gif, etc
+
+let allowedFileSize = 5100000;
+// arbitrary limit of just over 5MB for this example (5.1 million bytes should cover any OSes that measure differently)
+// JS object image sizes are measured in bytes
 
 const submitBtn = document.getElementById('submit-btn');
 const messageArea = document.getElementById('message-area');
 
-submitBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // prevents the page from reloading as it normally would within a <form> tag
+submitBtn.addEventListener('click', (event) => {
+    event.preventDefault(); // prevents the page from reloading as it normally would within a <form> tag
 
     let theUploadedFile = document.getElementById('upload-file-btn').files[0]; // gets the file as an object
 
-    console.log(theUploadedFile); // check your browser console for a full list of the object with properties that can be checked!
+    console.log(theUploadedFile);
 
-    // here we're working with just two of the properties: name, type, and size.
+    // **********************************
 
-    let allowedFileSize = 10100000;
+    // PERFORM THE CHECKS ON
+    // 1) FILE TYPE
+    // 2) FILE SIZE
 
-    // I've picked an arbitrary limit of just over 10MB for this example (10.1 million bytes)
-
-    // JS object image sizes are measured in bytes
-
-    if (theUploadedFile.size > allowedFileSize) {
-        alert('That image is too big. Maximum 10MB in size please');
+    // 1)
+    if (!allowedFileTypes.exec(theUploadedFile.name)) {
+        // exits from the Submit button click event without further action if the filetype is not one of the accepted types
+        showMessage('That filetype is not accepted');
         return;
-        // exits from the Submit button click event without further action if file is too big
     }
 
-    showMessage(theUploadedFile.name);
-    showMessage(theUploadedFile.type);
-
-    // *****************************************
-    // ****** CHECK FILENAME EXTENSION *********
-    // *****************************************
-
-    // first, get the part of the file name after the last-placed '.' in the text string (in case of filenames like 'image.something.something-else.jpg')
-
-    // check that the filename does include a dot '.'
-
-    for (let letter = 0; letter < theUploadedFile.name.length; letter++) {
-        if (letter == '.') {
-            // carry out check
-        }
+    // 2)
+    if (theUploadedFile.size > allowedFileSize) {
+        // exits from the Submit button click event without further action if file is too large
+        showMessage('That image is too big. Maximum 10MB in size please');
+        return;
     }
 
-    // let userFileExtension = theUploadedFile.name.splice(
-    //     theUploadedFile.name.lastIndexOf('.'),
-    //     theUploadedFile.name.length - 1
-    // );
+    // if both checks are cleared:
 
-    console.log(userFileExtension);
+    showMessage(
+        `ACCEPTED!<br>Name: ${theUploadedFile.name}<br>Type: ${theUploadedFile.type}<br>Size: ${theUploadedFile.size} bytes`
+    );
+    // now image manipulation, resizing, display etc can take place
+    let imageShow = document.getElementById('output');
+    imageShow.src = URL.createObjectURL(theUploadedFile);
 });
