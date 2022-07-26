@@ -50,7 +50,8 @@ submitBtn.addEventListener('click', (event) => {
         `ACCEPTED!<br>Name: ${theUploadedFile.name}<br>Type: ${theUploadedFile.type}<br>Size: ${theUploadedFile.size} bytes`
     );
     // now image manipulation, resizing, display etc can take place
-    theGallery[theGallery.length] = URL.createObjectURL(theUploadedFile);
+    theGallery[theGallery.length] =
+        URL.createObjectURL(theUploadedFile).slice(5);
 
     console.log('>>>', theGallery);
 
