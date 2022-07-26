@@ -1,22 +1,14 @@
-'use strict';
-
 function showMessage(theMessage) {
     messageArea.innerHTML += `<br><br>${theMessage}`;
 }
 
-function displayThumbnail(theUploadedFile) {
-    showMessage(theUploadedFile);
-}
-
-// ***********************************************
-// ***********************************************
+let theGallery = [];
 
 let allowedFileTypes = /(\.jpg|\.jpeg|\.png)$/i;
-// this RegEx can be arbitrarily expanded to allow more file types, e.g. .gif, etc
+// RegEx can be expanded to allow more file types, e.g. .gif, etc
 
 let allowedFileSize = 5100000;
-// arbitrary limit of just over 5MB for this example (5.1 million bytes should cover any OSes that measure differently)
-// JS object image sizes are measured in bytes
+// image size limit of just over 5MB for this example
 
 const submitBtn = document.getElementById('submit-btn');
 const messageArea = document.getElementById('message-area');
@@ -44,7 +36,11 @@ submitBtn.addEventListener('click', (event) => {
     // 2)
     if (theUploadedFile.size > allowedFileSize) {
         // exits from the Submit button click event without further action if file is too large
-        showMessage('That image is too big. Maximum 10MB in size please');
+        showMessage(
+            `That image is too big. Maximum ${(
+                allowedFileSize / 1000000
+            ).toFixed(1)}MB in size please`
+        );
         return;
     }
 
@@ -54,6 +50,21 @@ submitBtn.addEventListener('click', (event) => {
         `ACCEPTED!<br>Name: ${theUploadedFile.name}<br>Type: ${theUploadedFile.type}<br>Size: ${theUploadedFile.size} bytes`
     );
     // now image manipulation, resizing, display etc can take place
-    let imageShow = document.getElementById('output');
-    imageShow.src = URL.createObjectURL(theUploadedFile);
+    theGallery[theGallery.length] = URL.createObjectURL(theUploadedFile);
+
+    console.log('>>>', theGallery);
+
+    showGallery(theGallery);
 });
+
+function showGallery(theGallery) {
+    let imageShow = document.getElementById('output');
+
+    for (let image = 0; image < theGallery.length; image++) {
+        console.log(theGallery[image]);
+        let frame = document.createElement('img');
+        frame.src = theGallery[image];
+        console.log(frame);
+        imageShow.appendChild(frame);
+    }
+}
