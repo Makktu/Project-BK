@@ -2,7 +2,7 @@ function showMessage(theMessage) {
     messageArea.innerHTML += `<br><br>${theMessage}`;
 }
 
-let theGallery = [];
+let thumbnailWidth = 300;
 
 let allowedFileTypes = /(\.jpg|\.jpeg|\.png)$/i;
 // RegEx can be expanded to allow more file types, e.g. .gif, etc
@@ -50,22 +50,8 @@ submitBtn.addEventListener('click', (event) => {
         `ACCEPTED!<br>Name: ${theUploadedFile.name}<br>Type: ${theUploadedFile.type}<br>Size: ${theUploadedFile.size} bytes`
     );
     // now image manipulation, resizing, display etc can take place
-    theGallery[theGallery.length] =
-        URL.createObjectURL(theUploadedFile).slice(5);
 
-    console.log('>>>', theGallery);
-
-    showGallery(theGallery);
-});
-
-function showGallery(theGallery) {
     let imageShow = document.getElementById('output');
-
-    for (let image = 0; image < theGallery.length; image++) {
-        console.log(theGallery[image]);
-        let frame = document.createElement('img');
-        frame.src = theGallery[image];
-        console.log(frame);
-        imageShow.appendChild(frame);
-    }
-}
+    imageShow.src = URL.createObjectURL(theUploadedFile);
+    imageShow.width = thumbnailWidth;
+});
